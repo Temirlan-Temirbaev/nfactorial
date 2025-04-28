@@ -1,5 +1,8 @@
 # Рик и Морти, задание по отбору NFactorial 2025
 
+## Демо видео ссылка
+https://drive.google.com/file/d/1B-yDwklX4BN7rQbpDEvY1B3mnGig8Vh7/view?usp=sharing
+
 ## Описание
 Данное задание является частью отбора в команду NFactorial 2025. Проект из себя представляет сайт о вселенной Рика и Морти, бэкенд на NodeJs и веб приложение на Nextjs
 
