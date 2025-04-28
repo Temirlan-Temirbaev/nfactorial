@@ -1,0 +1,499 @@
+openapi: 3.0.0
+paths:
+  /character:
+    get:
+      description: Retrieve characters with optional filtering
+      operationId: CharacterController_getAll
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: Page number
+          schema:
+            default: 1
+            type: number
+        - name: name
+          required: false
+          in: query
+          description: Filter by character name
+          schema:
+            type: string
+        - name: status
+          required: false
+          in: query
+          description: Filter by character status
+          schema:
+            type: string
+            enum:
+              - alive
+              - dead
+              - unknown
+        - name: species
+          required: false
+          in: query
+          description: Filter by character species
+          schema:
+            type: string
+        - name: type
+          required: false
+          in: query
+          description: Filter by character type
+          schema:
+            type: string
+        - name: gender
+          required: false
+          in: query
+          description: Filter by character gender
+          schema:
+            type: string
+            enum:
+              - female
+              - male
+              - genderless
+              - unknown
+      responses:
+        '200':
+          description: Characters retrieved successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  info:
+                    type: object
+                    properties:
+                      count:
+                        type: number
+                        example: 51
+                      pages:
+                        type: number
+                        example: 3
+                      next:
+                        type: string
+                        example: https://rickandmortyapi.com/api/episode?page=2
+                        nullable: true
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Character'
+        '404':
+          description: Characters not found with the provided filters
+      summary: Get all characters
+      tags:
+        - characters
+  /character/{id}:
+    get:
+      description: >-
+        Retrieve a single character by ID or multiple characters with
+        comma-separated IDs (e.g., "1,2,3")
+      operationId: CharacterController_getCharacter
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Episode ID or comma-separated IDs
+          examples:
+            single:
+              value: '1'
+              description: Get a single character
+            multiple:
+              value: 1,2,3
+              description: Get multiple characters
+          schema:
+            example: '1'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Character'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Character'
+        '404':
+          description: Character not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      summary: Get character by ID
+      tags:
+        - characters
+  /location:
+    get:
+      description: Retrieve locations with optional filtering
+      operationId: LocationController_getAll
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: Page number
+          schema:
+            default: 1
+            type: number
+        - name: name
+          required: false
+          in: query
+          description: Filter by location name
+          schema:
+            type: string
+        - name: type
+          required: false
+          in: query
+          description: Filter by location type
+          schema:
+            type: string
+        - name: dimension
+          required: false
+          in: query
+          description: Filter by location dimension
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Locations retrieved successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  info:
+                    type: object
+                    properties:
+                      count:
+                        type: number
+                        example: 51
+                      pages:
+                        type: number
+                        example: 3
+                      next:
+                        type: string
+                        example: https://rickandmortyapi.com/api/episode?page=2
+                        nullable: true
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Location'
+        '404':
+          description: Locations not found with the provided filters
+      summary: Get all locations
+      tags:
+        - locations
+  /location/{id}:
+    get:
+      description: >-
+        Retrieve a single location by ID or multiple locations with
+        comma-separated IDs (e.g., "1,2,3")
+      operationId: LocationController_getLocation
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Location ID or comma-separated IDs
+          examples:
+            single:
+              value: '1'
+              description: Get a single location
+            multiple:
+              value: 1,2,3
+              description: Get multiple locations
+          schema:
+            example: '1'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Location'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Location'
+        '404':
+          description: Location not found
+      summary: Get location by ID
+      tags:
+        - locations
+  /episode:
+    get:
+      description: Retrieve episodes with optional filtering
+      operationId: EpisodeController_getAll
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: Page number
+          schema:
+            default: 1
+            type: number
+        - name: name
+          required: false
+          in: query
+          description: Filter by episode name
+          schema:
+            type: string
+        - name: episode
+          required: false
+          in: query
+          description: Filter by episode code (e.g. S01E01)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Episodes retrieved successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  info:
+                    type: object
+                    properties:
+                      count:
+                        type: number
+                        example: 51
+                      pages:
+                        type: number
+                        example: 3
+                      next:
+                        type: string
+                        example: https://rickandmortyapi.com/api/episode?page=2
+                        nullable: true
+                      prev:
+                        type: string
+                        example: null
+                        nullable: true
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Episode'
+        '404':
+          description: Episodes not found with the provided filters
+      summary: Get all episodes
+      tags:
+        - episodes
+  /episode/{id}:
+    get:
+      description: >-
+        Retrieve a single episode by ID or multiple episodes with
+        comma-separated IDs (e.g., "1,2,3")
+      operationId: EpisodeController_getEpisode
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Episode ID or comma-separated IDs
+          examples:
+            single:
+              value: '1'
+              description: Get a single episode
+            multiple:
+              value: 1,2,3
+              description: Get multiple episodes
+          schema:
+            example: '1'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Episode'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Episode'
+        '404':
+          description: Episode not found
+      summary: Get episode by ID
+      tags:
+        - episodes
+info:
+  title: Rick and Morty API
+  description: The Rick and Morty API documentation
+  version: '1.0'
+  contact: {}
+tags:
+  - name: characters
+    description: Character endpoints
+  - name: locations
+    description: Location endpoints
+  - name: episodes
+    description: Episode endpoints
+servers: []
+components:
+  schemas:
+    Character:
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the character
+        name:
+          type: string
+          description: The name of the character
+        status:
+          type: string
+          description: The status of the character (alive, dead or unknown)
+        species:
+          type: string
+          description: The species of the character
+        type:
+          type: string
+          description: The type or subspecies of the character
+        gender:
+          type: string
+          description: The gender of the character (female, male, genderless or unknown)
+        origin:
+          type: object
+          description: The character's origin location
+        location:
+          type: object
+          description: The character's last known location
+        image:
+          type: string
+          description: Link to the character's image
+        episode:
+          description: List of episodes in which this character appeared
+          type: array
+          items:
+            type: string
+        url:
+          type: string
+          description: Link to the character's own URL endpoint
+        created:
+          format: date-time
+          type: string
+          description: Time at which the character was created in the database
+      required:
+        - id
+        - name
+        - status
+        - species
+        - type
+        - gender
+        - origin
+        - location
+        - image
+        - episode
+        - url
+        - created
+    Error:
+      type: object
+      properties: {}
+    Location:
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the location
+        name:
+          type: string
+          description: The name of the location
+        type:
+          type: string
+          description: The type of the location
+        dimension:
+          type: string
+          description: The dimension in which the location is located
+        residents:
+          description: List of characters who have been last seen in the location
+          type: array
+          items:
+            type: string
+        url:
+          type: string
+          description: Link to the location's own URL endpoint
+        created:
+          format: date-time
+          type: string
+          description: Time at which the location was created in the database
+      required:
+        - id
+        - name
+        - type
+        - dimension
+        - residents
+        - url
+        - created
+    Episode:
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the episode
+        name:
+          type: string
+          description: The name of the episode
+        air_date:
+          type: string
+          description: The air date of the episode
+        episode:
+          type: string
+          description: The code of the episode (e.g. S01E01)
+        characters:
+          description: List of characters who appeared in the episode
+          type: array
+          items:
+            type: string
+        url:
+          type: string
+          description: Link to the episode's own URL endpoint
+        created:
+          format: date-time
+          type: string
+          description: Time at which the episode was created in the database
+      required:
+        - id
+        - name
+        - air_date
+        - episode
+        - characters
+        - url
+        - created
+    Info:
+      type: object
+      properties:
+        count:
+          type: number
+          description: The length of the response
+        pages:
+          type: number
+          description: The amount of pages
+        next:
+          type: string
+          description: Link to the next page (if it exists)
+        prev:
+          type: string
+          description: Link to the previous page (if it exists)
+      required:
+        - count
+        - pages
+        - next
+        - prev
+    WithPagination:
+      type: object
+      properties:
+        info:
+          description: Information about the API response
+          allOf:
+            - $ref: '#/components/schemas/Info'
+        results:
+          description: The list of results
+          type: array
+          items:
+            type: object
+      required:
+        - info
+        - results
